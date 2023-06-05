@@ -1,0 +1,11 @@
+.price {
+  text-align: right;
+  font-weight: bold;
+}
+
+.proposalSelected{
+ 
+  border: 3px solid #ff85d1;
+  border-radius: 20px;
+  background-color: rgb(17, 133, 200);
+}
