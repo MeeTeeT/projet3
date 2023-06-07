@@ -9,31 +9,27 @@ import { setCurrentVoteProposal } from "store/voter/voter-slice";
 
 export function ListItemGlobalProposal({ item,titleCol2,id }) {
   const dispatch = useDispatch();
-  const {contract, addressOwner, userAddress} = useContext(ContractContext);
-
   const currentProposal = useSelector(store => store.VOTER.currentVoteProposal);
-  async function voteForCurrentProposal(id){
-   // e.preventDefault();
-    //const formData = new FormData(e.currentTarget);
-    //const proposal = formData.get("proposal");
-   // console.log(proposal);
-   // dispatch(addVoter({address}));
-   //dispatch(setCurrentVoteProposal(item));
-  //voter dans la BC pour cette proposition
-  try {
-    // Appeler une fonction du contrat
-    //await contractInstance.methods.functionName().send({ from: '0x...' }); // Adresse du compte depuis lequel vous souhaitez exécuter la fonction
-    await contract.methods.setVote(id).send( { from: userAddress });
-    console.log('La fonction du contrat a été exécutée avec succès.');
-    console.log("vous avez votez pour la proposition", id);
-  } catch (error) {
-    console.error(error.message);
+  const {contract, addressOwner, userAddress} = useContext(ContractContext);
+  
+  function setCurVoteProposal(item, id){
+    console.log("item",item);
+    console.log("id",id);
+    if(currentProposal.description == item.description && currentProposal.id == id)
+    {
+      dispatch(setCurrentVoteProposal({"id":0, "description":""}));
+    }
+    else{
+      dispatch(setCurrentVoteProposal({"id":id, "description":item.description}));
+      
+    }
   }
- 
-  }
+
+  
+  
 
   return (
-    <tr onClick={()=>{voteForCurrentProposal(id)}} 
+    <tr onClick={()=>{setCurVoteProposal(item, id)}} 
     className = {item.description == currentProposal.description ? s.proposalSelected : s.proposal}>
       <th>{item.description}</th>
       <td className={s.price}>{titleCol2}</td>

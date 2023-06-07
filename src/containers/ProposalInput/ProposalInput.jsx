@@ -21,7 +21,7 @@ async function submit(e){
     //await contractInstance.methods.functionName().send({ from: '0x...' }); // Adresse du compte depuis lequel vous souhaitez exécuter la fonction
     await contract.methods.addProposal(proposal).send( { from: userAddress });
     console.log('La fonction du contrat a été exécutée avec succès.');
-    dispatch(addProposal({"description" : proposal, "voteCount" : 0}));
+    //dispatch(addProposal({"description" : proposal, "voteCount" : 0}));
 
     //console.log('return ', status);
   

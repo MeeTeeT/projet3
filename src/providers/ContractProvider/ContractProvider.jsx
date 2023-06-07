@@ -2,7 +2,7 @@ import React, { createContext, useEffect, useState } from 'react';
 import Web3 from 'web3';
 import { useDispatch, useSelector } from "react-redux";
 import { setConnectedUser} from "store/auth/auth-slice";
-import { changeSessionStatus,addGlobalProposal } from "store/voter/voter-slice";
+import { changeSessionStatus,addGlobalProposal,addProposal,addVoter } from "store/voter/voter-slice";
 import {ABI, CONTRACT_ADDRESS} from "config";
 
 const ContractContext = createContext();
@@ -76,17 +76,36 @@ const ContractProvider = ({ children }) => {
           }).on("error", error =>{console.log("erreur lors de lecoute des evenement", error);})
 
           contract.events.VoterRegistered().on('data',eventData => {
+            dispatch(addVoter({"address" : eventData.returnValues.voterAddress, "isRegistered" : true, "hasVoted" : false, "votedProposalId" : 0}));
+
             console.log("Nouveau votant Registered: ", eventData.returnValues);
            // dispatch(changeSessionStatus({"previousStatus":eventData.previousStatus,"newStatus":eventData.newStatus} ));
-         
+         console.log("new voter registered : ",eventData.returnValues);
           }).on("error", error =>{console.log("erreur lors de lecoute des evenement", error);})
 
-          contract.events.ProposalRegistered().on('data',eventData => {
-            console.log("Nouvelle proposition Registered: ", eventData.returnValues);
+          contract.events.ProposalRegistered().on('data',async (eventData) => {
+            console.log("Nouvelle proposition Registered: ", eventData.returnValues.proposalId);
            // dispatch(changeSessionStatus({"previousStatus":eventData.previousStatus,"newStatus":eventData.newStatus} ));
          
-          }).on("error", error =>{console.log("erreur lors de lecoute des evenement", error);})
+         const proposal = await contract.methods.getOneProposal(eventData.returnValues.proposalId).call({ from: userAdd });
+          //on push dans le tableau redux des proposal proposalGlobalList
+         dispatch(addProposal({"description" : proposal.description, "voteCount" : proposal.voteCount}));
+         //dispatch(addGlobalProposal({"description" : proposal.description, "voteCount" : proposal.voteCount}));
+        
+        }).on("error", error =>{console.log("erreur lors de lecoute des evenement", error);})
 
+        contract.events.Voted().on('data',async (eventData) => {
+          console.log("new vote done: ", eventData.returnValues.proposalId);
+         // dispatch(changeSessionStatus({"previousStatus":eventData.previousStatus,"newStatus":eventData.newStatus} ));
+       
+       //const proposal = await contract.methods.getOneProposal(eventData.returnValues.proposalId).call({ from: userAdd });
+        //on push dans le tableau redux des proposal proposalGlobalList
+       //dispatch(addProposal({"description" : proposal.description, "voteCount" : proposal.voteCount}));
+       //dispatch(addGlobalProposal({"description" : proposal.description, "voteCount" : proposal.voteCount}));
+      
+      }).on("error", error =>{console.log("erreur lors de lecoute des evenement", error);})
+
+        
           
 
         } else {
@@ -129,6 +148,15 @@ while(erreur == false){
     }
   },[votingStatus])
 
+  /*
+  useEffect(() => {
+    const loadProposal = async () => {
+      const proposalArray = await contract.methods.proposalArray().call({ from: userAddress });
+      console.log("proposal",proposalArray);
+     // dispatch(addGlobalProposal({"description" : proposal.description, "voteCount" : proposal.voteCount}));
+        
+    }},[])
+*/
   return (
     <ContractContext.Provider value={{contract : contract, adressOwner : addressOwner, userAddress: userAddress}}>
       {children}

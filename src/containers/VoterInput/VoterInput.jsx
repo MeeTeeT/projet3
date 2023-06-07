@@ -19,8 +19,7 @@ async function  submit(e){
   //await contractInstance.methods.functionName().send({ from: '0x...' }); // Adresse du compte depuis lequel vous souhaitez exécuter la fonction
   await contract.methods.addVoter(address).send( { from: userAddress });
   console.log('La fonction du contrat a été exécutée avec succès.');
-  dispatch(addVoter({"address" : address, "isRegistered" : true, "hasVoted" : false, "votedProposalId" : 0}));
-
+  
   //console.log('return ', status);
 
 } catch (error) {
@@ -34,7 +33,7 @@ async function  submit(e){
   return (
     <form onSubmit={submit}>
       <div className="row justify-content-center">
-        <div className="col-12 col-sm-5 col-md-4 col-lg-8 mb-2">
+        <div className="col-12 col-sm-5 col-md-4 col-lg-9 mb-2">
           <input
             type="text"
             className="form-control"
@@ -43,7 +42,7 @@ async function  submit(e){
           />
         </div>
 
-        <div className="col-12 col-sm-2 col-md-4 col-lg-4 mb-2">
+        <div className="col-12 col-sm-2 col-md-4 col-lg-3 mb-2">
           <button type="submit" className={`btn btn-primary ${s.btn}`}>
             Add
           </button>

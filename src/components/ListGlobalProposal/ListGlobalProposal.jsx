@@ -7,7 +7,9 @@ export function ListGlobalProposal({ items, titleCol2 }) {
         <tbody>
           {
             items.map((item,i)=>{
-              return <ListItemGlobalProposal key={item+i} item={item} id={i} titleCol2={titleCol2}/>
+              return (i != 0) ? 
+              <ListItemGlobalProposal key={item+i} item={item} id={i} titleCol2={titleCol2}/>
+              : null
             })
 
           }

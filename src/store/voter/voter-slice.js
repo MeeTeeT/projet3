@@ -8,7 +8,7 @@ export const voterSlice = createSlice({
       status:{"previousStatus" :0,"newStatus":0},
       proposalList:[],
       proposalGlobalList:[],
-      currentVoteProposal:0
+      currentVoteProposal:{"id":0, "description":""}
     },
     reducers:{
         addVoter:(currentSlice, action)=>{
@@ -23,7 +23,7 @@ export const voterSlice = createSlice({
          addProposal:(currentSlice, action)=>{
             //currentSlice.proposal.push({...action.payload, });
             currentSlice.proposalList.push(action.payload);
-            currentSlice.proposalGlobalList.push(action.payload);
+           // currentSlice.proposalGlobalList.push(action.payload);
          },
          setCurrentVoteProposal:(currentSlice, action)=>{
             currentSlice.currentVoteProposal = action.payload;
