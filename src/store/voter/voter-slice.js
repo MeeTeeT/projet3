@@ -11,6 +11,10 @@ export const voterSlice = createSlice({
       currentVoteProposal:{"id":0, "description":""}
     },
     reducers:{
+      resetVoter:(currentSlice, action)=>{
+         // currentSlice.voterList.push({...action.payload});
+         currentSlice.voterList = [];
+      },
         addVoter:(currentSlice, action)=>{
            // currentSlice.voterList.push({...action.payload});
            currentSlice.voterList.push(action.payload);
@@ -39,5 +43,5 @@ export const voterSlice = createSlice({
 })
 
 
-const {addVoter,changeSessionStatus,addProposal,setCurrentVoteProposal,addGlobalProposal} = voterSlice.actions;
-export {addVoter,changeSessionStatus,addProposal,setCurrentVoteProposal,addGlobalProposal};
+const {addVoter,changeSessionStatus,addProposal,setCurrentVoteProposal,addGlobalProposal,resetVoter} = voterSlice.actions;
+export {addVoter,changeSessionStatus,addProposal,setCurrentVoteProposal,addGlobalProposal,resetVoter};
