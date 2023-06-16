@@ -173,7 +173,7 @@ const ContractProvider = ({ children }) => {
       // Vérifier si MetaMask est installé
       if (window.ethereum) {
         // Activer MetaMask
-        await window.ethereum.enable();
+        //await window.ethereum.enable();
         //const web3Instance = new Web3(window.ethereum);
         
         const web3Instance = new Web3(Web3.givenProvider || "ws://localhost:8545");

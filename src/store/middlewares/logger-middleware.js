@@ -1,17 +1,18 @@
 import { createListenerMiddleware, isAnyOf } from "@reduxjs/toolkit";
-import {addExpense, setIncome, incrementCountActionPerformed} from "store/expense/expense-slice";
+
+import { addProposal } from "store/voter/voter-slice";
 export const loggerMiddleWare = createListenerMiddleware();
 
 loggerMiddleWare.startListening({
     /*
     predicate:(action) => {
-        return action.type === "expenseSlice/addExpense" || "expenseSlice/setIncome";
+        return action.type === "voterSlice/addProposal";
     },
     */
-    matcher : isAnyOf(addExpense,setIncome),
+    matcher : isAnyOf(addProposal),
     effect: async (action, listenerAPI) =>{
         //console.log(action);
-        listenerAPI.dispatch(incrementCountActionPerformed());
+        listenerAPI.dispatch();
         //console.log(listenerAPI.getState());
     }
 })

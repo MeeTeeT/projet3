@@ -1,4 +1,3 @@
-import { ExpenseInput } from "containers/ExpenseInput/ExpenseInput";
 import s from "./style.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { useContext } from "react";

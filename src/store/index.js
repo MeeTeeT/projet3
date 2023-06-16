@@ -1,6 +1,6 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import {voterSlice} from "./voter/voter-slice";
-import {expenseSlice} from "./expense/expense-slice";
+
 import {web3Slice} from "./web3/web3-slice";
 import {authSlice} from "./auth/auth-slice";
 import storage from "redux-persist/lib/storage";
@@ -12,11 +12,11 @@ const persistConfig = {
     key: "root",
     version : 1,
     storage,
-    whitelist:['EXPENSE']
+    whitelist:[]
 }
 
 const rootReducers = combineReducers({
-    EXPENSE: expenseSlice.reducer,
+    
     VOTER: voterSlice.reducer,
     AUTH: authSlice.reducer,
     WEB3: web3Slice.reducer
