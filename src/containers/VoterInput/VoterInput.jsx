@@ -23,6 +23,7 @@ async function  submit(e){
   //console.log('return ', status);
 
 } catch (error) {
+  alert("An error occurs : ",error);
   console.error('Une erreur s\'est produite lors de l\'exécution de la fonction du contrat :', error);
 }
  

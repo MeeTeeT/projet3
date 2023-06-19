@@ -26,6 +26,7 @@ async function submit(e){
     //console.log('return ', status);
   
   } catch (error) {
+    alert("An error occurs : ",error);
     console.error(error.message);
   }
  

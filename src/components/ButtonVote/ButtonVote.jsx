@@ -31,6 +31,7 @@ export function ButtonVote() {
         console.log('La fonction du contrat a été exécutée avec succès.');
         console.log("vous avez votez pour la proposition", id);
     } catch (error) {
+      alert("An error occurs : ",error);
         console.error(error.message);
     }
  
