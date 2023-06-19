@@ -325,8 +325,29 @@ const ContractProvider = ({ children }) => {
     };
   }, []);
 
-
+//Fill proposal to vote for
 async function fillProposal(){
+
+
+  let oldEvents= await contract.getPastEvents('ProposalRegistered', {
+    fromBlock: 0,
+    toBlock: 'latest'
+});
+ oldEvents.forEach(async event => {
+    console.log("event proposal history",event.returnValues.proposalId);
+    try {
+      var proposal = await contract.methods.getOneProposal(event.returnValues.proposalId).call({ from: userAddress });
+      console.log("proposal ",proposal);
+      dispatch(addGlobalProposal({"description" : proposal.description, "voteCount" : parseInt(proposal.voteCount,10)}));
+    }
+    catch(e){
+      
+      console.error("error:", e);
+      
+    }
+
+  });
+/*
   var erreur = false;
   var i = 0;
   //recuperer la liste des proposal et la stocker dans le store
@@ -346,9 +367,45 @@ while(erreur == false){
   }
   
 }
+*/
+
 }
 
+//Fill registered voter list
+async function fillVoter(){
+
+try{
+  let oldEvents= await contract.getPastEvents('VoterRegistered', {
+    fromBlock: 0,
+    toBlock: 'latest'
+});
+ oldEvents.forEach(async event => {
+   // console.log("event proposal history",event.returnValues.voterAddress);
+   dispatch(addVoter({"address" : event.returnValues.voterAddress, "isRegistered" : true, "hasVoted" : false, "votedProposalId" : 0}));
+
+    /* try {
+      var proposal = await contract.methods.getOneProposal(event.returnValues.proposalId).call({ from: userAddress });
+      console.log("proposal ",proposal);
+      dispatch(addGlobalProposal({"description" : proposal.description, "voteCount" : parseInt(proposal.voteCount,10)}));
+    }
+    catch(e){
+      
+      console.error("error:", e);
+      
+    }
+    */
+
+  });
+}catch(e){console.log(e);}
+}
+
+
   useEffect(() => {
+    if(votingStatus.newStatus == 0){
+      fillVoter();
+     
+    }
+    else 
     if(votingStatus.newStatus == 3){
       fillProposal();
      
