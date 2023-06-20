@@ -2,20 +2,27 @@
 pragma solidity 0.8.19;
 import "../node_modules/@openzeppelin/contracts/access/Ownable.sol";
 
+/// @notice Voting Alyra contract
+/// @dev contract implements Ownable from openzeppelin
 contract Voting is Ownable {
+
+    /// @notice Id of the winning proposal
     uint public winningProposalID;
 
+    /// @notice Structure of a voter
     struct Voter { 
         bool isRegistered;
         bool hasVoted;
         uint votedProposalId;
     }
 
+    /// @notice Structure of a proposal
     struct Proposal {
         string description;
         uint voteCount;
     }
 
+    /// @notice Status of voting in the workflow voting system
     enum WorkflowStatus {
         RegisteringVoters,
         ProposalsRegistrationStarted,
@@ -26,7 +33,11 @@ contract Voting is Ownable {
     }
 
     WorkflowStatus public workflowStatus;
+
+    ///@notice array of proposal identify by Id
     Proposal[] proposalsArray;
+
+    ///@notice mapping of registered voter
     mapping(address => Voter) voters;
 
     event VoterRegistered(address voterAddress);
@@ -46,12 +57,18 @@ contract Voting is Ownable {
 
     // ::::::::::::: GETTERS ::::::::::::: //
 
+    /// @notice Return a voter by his address
+    /// @param _addr address of the voters
+    /// @return voter
     function getVoter(
         address _addr
     ) external view onlyVoters returns (Voter memory) {
         return voters[_addr];
     }
 
+    /// @notice get a proposal by its Id in proposal array
+    /// @param _id id of proposal in proposal array
+    /// @return proposalsArray , return a proposal
     function getOneProposal(
         uint _id
     ) external view onlyVoters returns (Proposal memory) {
@@ -60,6 +77,8 @@ contract Voting is Ownable {
 
     // ::::::::::::: REGISTRATION ::::::::::::: //
 
+    /// @notice Register a voter
+    /// @param _addr address of the voter to register
     function addVoter(address _addr) external onlyOwner {
         require(
             workflowStatus == WorkflowStatus.RegisteringVoters,
@@ -73,6 +92,8 @@ contract Voting is Ownable {
 
     // ::::::::::::: PROPOSAL ::::::::::::: //
 
+    /// @notice Add a proposal
+    /// @param _desc description of the proposal
     function addProposal(string calldata _desc) external onlyVoters {
         require(
             workflowStatus == WorkflowStatus.ProposalsRegistrationStarted,
@@ -92,6 +113,8 @@ contract Voting is Ownable {
 
     // ::::::::::::: VOTE ::::::::::::: //
 
+    /// @notice vote for a proposal and update winning Id
+    /// @param _id id of the proposal to vote for in proposal array
     function setVote(uint _id) external onlyVoters {
         require(
             workflowStatus == WorkflowStatus.VotingSessionStarted,
@@ -104,11 +127,16 @@ contract Voting is Ownable {
         voters[msg.sender].hasVoted = true;
         proposalsArray[_id].voteCount++;
 
+        if(proposalsArray[_id].voteCount > proposalsArray[winningProposalID].voteCount){
+            winningProposalID = _id;
+        }
+
         emit Voted(msg.sender, _id);
     }
 
     // ::::::::::::: STATE ::::::::::::: //
 
+    /// @notice start proposal registering session
     function startProposalsRegistering() external onlyOwner {
         require(
             workflowStatus == WorkflowStatus.RegisteringVoters,
@@ -126,6 +154,7 @@ contract Voting is Ownable {
         );
     }
 
+    /// @notice End proposal registering session
     function endProposalsRegistering() external onlyOwner {
         require(
             workflowStatus == WorkflowStatus.ProposalsRegistrationStarted,
@@ -138,6 +167,7 @@ contract Voting is Ownable {
         );
     }
 
+    /// @notice Start voting session
     function startVotingSession() external onlyOwner {
         require(
             workflowStatus == WorkflowStatus.ProposalsRegistrationEnded,
@@ -150,6 +180,7 @@ contract Voting is Ownable {
         );
     }
 
+    /// @notice End voting session
     function endVotingSession() external onlyOwner {
         require(
             workflowStatus == WorkflowStatus.VotingSessionStarted,
@@ -162,6 +193,7 @@ contract Voting is Ownable {
         );
     }
 
+    /// @notice calculate winner and set winning proposal Id
     function tallyVotes() external onlyOwner {
         require(
             workflowStatus == WorkflowStatus.VotingSessionEnded,
