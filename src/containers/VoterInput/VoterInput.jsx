@@ -3,8 +3,11 @@ import { addVoter } from "store/voter/voter-slice";
 import s from "./style.module.css";
 import { ContractContext } from "providers/ContractProvider/ContractProvider";
 import { useContext } from "react";
+import { useSelector } from "react-redux";
+
 
 export function VoterInput(props) {
+  const voterList = useSelector(store => store.VOTER.voterList);
 const dispatch = useDispatch();
 const {contract, addressOwner, userAddress} = useContext(ContractContext);
 
@@ -12,6 +15,15 @@ async function  submit(e){
   e.preventDefault();
   const formData = new FormData(e.currentTarget);
   const address = formData.get("address");
+  console.log(voterList, voterList.length);
+  for(var i=0;i<voterList.length;i++){
+    console.log("voter list i", voterList[i].address);
+    if(voterList[i].address == address){
+      alert("Address "+address+" has already been registered");
+    }
+    return
+  }
+  
   console.log(address);
  // dispatch(addVoter({address}));
  try {
@@ -38,7 +50,7 @@ async function  submit(e){
           <input
             type="text"
             className="form-control"
-            placeholder='Address to register"'
+            placeholder='Voter address to register'
             name="address"
           />
         </div>

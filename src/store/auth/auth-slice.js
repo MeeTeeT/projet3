@@ -11,6 +11,11 @@ export const authSlice = createSlice({
            // currentSlice.voterList.push({...action.payload});
            currentSlice.auth = action.payload;
         },
+        setHasVoted:(currentSlice, action)=>{
+            // currentSlice.voterList.push({...action.payload});
+            console.log("reducer", action.payload);
+            currentSlice.auth.hasVoted = action.payload;
+         },
       
  
 
@@ -19,5 +24,5 @@ export const authSlice = createSlice({
 })
 
 
-const {setConnectedUser} = authSlice.actions;
-export {setConnectedUser};
+const {setConnectedUser,setHasVoted} = authSlice.actions;
+export {setConnectedUser,setHasVoted};

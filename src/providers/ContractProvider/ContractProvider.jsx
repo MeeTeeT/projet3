@@ -1,7 +1,7 @@
 import React, { createContext, useCallback, useEffect, useState, useReducer } from 'react';
 import Web3 from 'web3';
 import { useDispatch, useSelector } from "react-redux";
-import { setConnectedUser} from "store/auth/auth-slice";
+import { setConnectedUser,setHasVoted} from "store/auth/auth-slice";
 import { changeSessionStatus,addGlobalProposal,addProposal,addVoter,resetVoter } from "store/voter/voter-slice";
 import {ABI, CONTRACT_ADDRESS} from "config";
 
@@ -10,6 +10,7 @@ const ContractContext = createContext();
 const ContractProvider = ({ children }) => {
   const dispatch = useDispatch();
   const votingStatus = useSelector(store => store.VOTER.status);
+  const auth = useSelector(store => store.AUTH.auth);
 
   const [contract, setContract] = useState(null);
   const [addressOwner, setAddressOwner] = useState(null);
@@ -201,6 +202,7 @@ const ContractProvider = ({ children }) => {
 
        
         var role = "Owner";
+        var hasVoted = false;
         if(owner == userAdd){
          role = "Owner";
         }
@@ -213,6 +215,7 @@ const ContractProvider = ({ children }) => {
               const voter = await contract.methods.getVoter(userAdd).call({ from: userAdd });
              // await voter.wait();
             //  console.log("3");
+            hasVoted = voter.hasVoted;
              console.log('is registred', voter.isRegistered);
             if(voter.isRegistered){role = "Registered";}
             else{role="Other";}
@@ -229,7 +232,7 @@ const ContractProvider = ({ children }) => {
         //  }
         }
        
-        dispatch(setConnectedUser({"address":userAdd,"role":role}));
+        dispatch(setConnectedUser({"address":userAdd,"role":role,"hasVoted":hasVoted}));
          
         try {
           const status = await contract.methods.workflowStatus().call({ from: userAdd });
@@ -254,26 +257,37 @@ const ContractProvider = ({ children }) => {
        console.log("new voter registered : ",eventData.returnValues);
         }).on("error", error =>{console.log("erreur lors de lecoute des evenement", error);})
 
+
         contract.events.ProposalRegistered().on('data',async (eventData) => {
           console.log("Nouvelle proposition Registered: ", eventData.returnValues.proposalId);
-         // dispatch(changeSessionStatus({"previousStatus":eventData.previousStatus,"newStatus":eventData.newStatus} ));
-       
-       const proposal = await contract.methods.getOneProposal(eventData.returnValues.proposalId).call({ from: userAdd });
-        //on push dans le tableau redux des proposal proposalGlobalList
-       dispatch(addProposal({"description" : proposal.description, "voteCount" : proposal.voteCount}));
-       //dispatch(addGlobalProposal({"description" : proposal.description, "voteCount" : proposal.voteCount}));
-      
-      }).on("error", error =>{console.log("erreur lors de lecoute des evenement", error);})
+          const proposal = await contract.methods.getOneProposal(eventData.returnValues.proposalId).call({ from: userAdd });
+          //on push dans le tableau redux des proposal proposalGlobalList
+          dispatch(addProposal({"description" : proposal.description, "voteCount" : proposal.voteCount}));
+          
+        }).on("error", error =>{console.log("erreur lors de lecoute des evenement", error);})
+
 
       contract.events.Voted().on('data',async (eventData) => {
         console.log("new vote done: ", eventData.returnValues.proposalId);
-       // dispatch(changeSessionStatus({"previousStatus":eventData.previousStatus,"newStatus":eventData.newStatus} ));
-     
-     //const proposal = await contract.methods.getOneProposal(eventData.returnValues.proposalId).call({ from: userAdd });
-      //on push dans le tableau redux des proposal proposalGlobalList
-     //dispatch(addProposal({"description" : proposal.description, "voteCount" : proposal.voteCount}));
-     //dispatch(addGlobalProposal({"description" : proposal.description, "voteCount" : proposal.voteCount}));
+       
+
+        try {
+         // console.log("debut bloc try, valeur de auth.address",auth.address);
+         // const voter = await contract.methods.getVoter(auth.address).call({ from: auth.address });
+         // console.log("voter dans bloc try",voter);
+         // hasVoted = voter.hasVoted;
+
+         // console.log("recupo dans l'event du hasvoted", hasVoted);
+          dispatch(setHasVoted(true));
     
+      }
+    catch (error) {
+      console.error(error.message);
+    }
+ 
+   
+     
+
     }).on("error", error =>{console.log("erreur lors de lecoute des evenement", error);})
 
       
@@ -327,7 +341,8 @@ const ContractProvider = ({ children }) => {
 
 //Fill proposal to vote for
 async function fillProposal(){
-
+  dispatch(resetVoter());
+   
 
   let oldEvents= await contract.getPastEvents('ProposalRegistered', {
     fromBlock: 0,
@@ -373,7 +388,7 @@ while(erreur == false){
 
 //Fill registered voter list
 async function fillVoter(){
-
+  dispatch(resetVoter());
 try{
   let oldEvents= await contract.getPastEvents('VoterRegistered', {
     fromBlock: 0,
@@ -401,7 +416,7 @@ try{
 
 
   useEffect(() => {
-    if(votingStatus.newStatus == 0){
+    if(votingStatus.newStatus == 0 || votingStatus.newStatus == 1){
       fillVoter();
      
     }

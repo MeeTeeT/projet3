@@ -10,14 +10,16 @@ import { ProposalInput } from "containers/ProposalInput/ProposalInput";
 import { ListGlobalProposal } from "components/ListGlobalProposal/ListGlobalProposal";
 import { ButtonVote } from "components/ButtonVote/ButtonVote";
 import { ContractProvider } from "providers/ContractProvider/ContractProvider";
+import Stepper from 'react-stepper-horizontal';
 
 export function App() {
   const voterList = useSelector(store => store.VOTER.voterList);
-  const votingStatus = useSelector(store => store.VOTER.status);
+  var votingStatus = useSelector(store => store.VOTER.status);
   const proposalList = useSelector(store => store.VOTER.proposalList);
   const proposalGlobalList = useSelector(store => store.VOTER.proposalGlobalList);
   const auth = useSelector(store => store.AUTH.auth);
 
+    var currentStep = Number(useSelector(store => store.VOTER.status.newStatus));
  
 
   return (
@@ -30,7 +32,23 @@ export function App() {
         <div className={`col-9 ${s.income_input}`}>
        <Login /> 
         </div>
+        
+       
       </div>
+      <Stepper steps={ [
+          {title: 'Registering voters'}, 
+          {title: 'Start proposal'}, 
+          {title: 'End Proposal'}, 
+          {title: 'Start Voting'},
+          {title: 'End Voting'},
+          {title: 'Vote Taillies'}
+          ] }  activeColor= "#ff85d1" 
+          completeColor= "#ff85d1" 
+          activeTitleColor="white" 
+          completeTitleColor="white" 
+          completeBarColor = "white" 
+          activeStep={ currentStep} />
+      <br/><br/>
       { auth.role == "Owner" ?
 
       <div className={`row ${s.workspace}`}>
@@ -40,12 +58,12 @@ export function App() {
         </div> 
       }
         
-        <div className={`col-11 col-md-6 col-lg-4 ${s.expense_list}`}>
+        <div className={`col-11 col-md-6 col-lg-4 ${s.whitelisting_list}`}>
           {votingStatus.newStatus != 5 ?
           <List items={voterList} titleCol2={"Registered"}/>
         : null  
         }
-
+ 
           <div className={`col-12 ${s.expense_total}`}>
           <ButtonChangeStatus />
           </div>
@@ -55,27 +73,32 @@ export function App() {
       auth.role == "Registered" ?
        <div className={`row ${s.workspace}`}>
         
-        {votingStatus.newStatus == 0 ? <> <div className={`col-11 col-md-6 col-lg-4 ${s.expense_list}`}>Registering voters in progress... Stay tuned !</div></> : 
+
+        
+        {votingStatus.newStatus == 0 ? <> <div className={`col-11 col-md-6 col-lg-4 ${s.msg_info}`}>Registering voters in progress... Stay tuned !</div></> : 
          votingStatus.newStatus == 1 ? 
         <>
         <div className={`col-12  ${s.expense_input}`}>
             <ProposalInput />
           </div> 
         
-          <div className={`col-11 col-md-6 col-lg-4 ${s.expense_list}`}>
+          <div className={`col-11 col-md-6 col-lg-4 ${s.whitelisting_list}`}>
             <ListProposal items={proposalList} titleCol2={"Proposed"}/>
             
           </div>
           </>
           : 
-         votingStatus.newStatus == 2 ? <><div className={`col-11 col-md-6 col-lg-4 ${s.expense_list}`}>
+         votingStatus.newStatus == 2 ? <><div className={`col-11 col-md-6 col-lg-4 ${s.msg_info}`}>
          Proposal session is termined... Wait for voting sessions opening</div> </> : 
          votingStatus.newStatus == 3 ? 
-         <><div>Vote for a proposal (click on proposal)</div>
+
+         auth.hasVoted == false ?
+         <><div className={`col-11 col-md-6 col-lg-4 ${s.msg_info}`}>
+        Please vote for a proposal</div><br/>
           <>
         
         
-          <div className={`col-11 col-md-6 col-lg-4 ${s.expense_list}`}>
+          <div className={`col-11 col-md-6 col-lg-4 ${s.whitelisting_list}`}>
             <ListGlobalProposal items={proposalGlobalList} titleCol2={""}/>
             <div className={`col-12 ${s.expense_total}`}>
             <ButtonVote />
@@ -85,22 +108,25 @@ export function App() {
           </>
           
           </> :
+          <div className={`col-11 col-md-6 col-lg-4 ${s.msg_info}`}>
+          Thanks you for your vote. Please wait for next step</div>
+          :
 
-         votingStatus.newStatus == 4 ? <> <div className={`col-11 col-md-6 col-lg-4 ${s.expense_list}`}>Session vote ended. Winner annoncment to come</div> </>:
-         votingStatus.newStatus == 5 ? <> <div className={`col-11 col-md-6 col-lg-4 ${s.expense_list}`}><ButtonChangeStatus /></div></> :
+         votingStatus.newStatus == 4 ? <> <div className={`col-11 col-md-6 col-lg-4 ${s.msg_info}`}>Session vote ended. Winner annoncment to come</div> </>:
+         votingStatus.newStatus == 5 ? <> <div className={`col-11 col-md-6 col-lg-4 ${s.whitelisting_list}`}><ButtonChangeStatus /></div></> :
         "ERROR"
         }
 
        </div>
        :
        <div className={`row ${s.workspace}`}>
-         {votingStatus.newStatus == 0 ? <><div className={`col-11 col-md-6 col-lg-4 ${s.expense_list}`}><div>Registering voters in progress... Stay tuned !</div> </div></> 
+         {votingStatus.newStatus == 0 ? <><div className={`col-11 col-md-6 col-lg-4 ${s.msg_info}`}><div>Registering voters in progress... Stay tuned !</div> </div></> 
          : votingStatus.newStatus == 1 ||
          votingStatus.newStatus == 2 ||
          votingStatus.newStatus == 3 ||
-         votingStatus.newStatus == 4  ? <><div className={`col-11 col-md-6 col-lg-4 ${s.expense_list}`}><div>Sorry... But your are not whitelisted !</div> </div></> 
+         votingStatus.newStatus == 4  ? <><div className={`col-11 col-md-6 col-lg-4 ${s.msg_info}`}><div>Sorry... But your are not whitelisted !</div> </div></> 
         :
-        <div className={`col-11 col-md-6 col-lg-4 ${s.expense_list}`}><ButtonChangeStatus/></div>
+        <div className={`col-11 col-md-6 col-lg-4 ${s.whitelisting_list}`}><ButtonChangeStatus/></div>
  }
        </div>
       }

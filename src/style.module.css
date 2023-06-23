@@ -32,11 +32,28 @@
   align-items: center;
   justify-content: center;
 }
-.expense_list {
+.whitelisting_list {
   flex: 8;
   align-self: center;
   margin-top: 20px;
 }
+.msg_info {
+  flex: 8;
+  text-align: center;
+  align-self: center;
+  justify-content: center;
+  align-content: center;
+  justify-items: center;
+  margin-top: 20px;
+  font-size: 24px;
+  background-color: #ff85d1;
+  color: white;
+  padding: 20px;
+  border-radius: 15px;
+  width: 550px;
+  max-height: 100px;
+}
+
 
 .expense_total {
   margin-top: 50px;

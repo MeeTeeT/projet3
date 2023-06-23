@@ -9,10 +9,11 @@ loggerMiddleWare.startListening({
         return action.type === "voterSlice/addProposal";
     },
     */
+
     matcher : isAnyOf(addProposal),
     effect: async (action, listenerAPI) =>{
         //console.log(action);
-        listenerAPI.dispatch();
+        //listenerAPI.dispatch();
         //console.log(listenerAPI.getState());
     }
 })

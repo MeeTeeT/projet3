@@ -199,6 +199,7 @@ contract Voting is Ownable {
             workflowStatus == WorkflowStatus.VotingSessionEnded,
             "Current status is not voting session ended"
         );
+        /*
         uint _winningProposalId;
         for (uint256 p = 0; p < proposalsArray.length; p++) {
             if (
@@ -209,7 +210,7 @@ contract Voting is Ownable {
             }
         }
         winningProposalID = _winningProposalId;
-
+*/
         workflowStatus = WorkflowStatus.VotesTallied;
         emit WorkflowStatusChange(
             WorkflowStatus.VotingSessionEnded,
