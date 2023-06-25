@@ -3,7 +3,7 @@
 ## Rendu
 
 - Déploiement de la dApp sur Vercel : https://projet3-alyra.vercel.app/
-- Lien vers la vidéo de démo
+- Lien vers la vidéo de démo de dApp : https://www.loom.com/share/0fe086f5a99b490ab4788b813a2c2f12?sid=bb71fe1f-d18e-48ab-8410-33572e5ef917
 
 ## Environnement
 
