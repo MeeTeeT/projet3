@@ -5,6 +5,10 @@
 - Déploiement de la dApp sur Vercel : https://projet3-alyra.vercel.app/
 - Lien vers la vidéo de démo de dApp : https://www.loom.com/share/0fe086f5a99b490ab4788b813a2c2f12?sid=bb71fe1f-d18e-48ab-8410-33572e5ef917
 
+(Désolé, je me suis rendu compte que je parlais super vite dans la vidéo, mais j'ai du faire rapide pour pas que la vidéo dure 2h !)
+
+Je n'ai pas précisé dans la vidéo (il aurait fallu que je recommence une session de vote du début), mais je test aussi qu'il y a bien au moins un gagnant. Par exemple si il n'y a eu aucune proposition ou aucun vote, au lieu d'afficher le gagnant, j'affiche qu'il n'y a "pas de gagnant").
+
 ## Environnement
 
 <u>_BackEnd :_</u>
