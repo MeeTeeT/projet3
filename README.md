@@ -17,11 +17,11 @@
 - React + Redux + web3
 
 <u>_Remarque : L'utilisation de Redux n'était pas indispensable pour l'exercice, mais je me suis servis du cas cette dApp pour me former à React (+redux). (je n'avais jamais travaillé avec React auparavant)
-L'utilisation de Redux m'a finalement été très utile car elle m'a permis de bien comprendre les différentes interractions avec la BLockchain étant donné que je pouvais visualiser tout ce que je remontais de la BC dans le store Redux._</u>
+L'utilisation de Redux m'a finalement été très utile car elle m'a permis de bien comprendre les différentes interractions avec la BLockchain étant donné que je pouvais visualiser tout ce que je remontais de la BC dans le store Redux en temps réel_</u>
 
 ## Principe de fonctionnement
 
-Sur le principe, ma dApp fonctionne de la facon suivante :
+Sur le principe, ma dApp fonctionne de la façon suivante :
 
 - J'interragis avec le smart contract en appelant des fonctions (changeStatus, addProposal, vote, ...) dans des conponents (ProposalInput, VoterInput, ...).
 - J'écoute les events de la blockchain et je stock les retours de ces events dans mon store Redux dans ContractProvider.jsx
@@ -29,7 +29,7 @@ Sur le principe, ma dApp fonctionne de la facon suivante :
 
 Remarque : Je n'ai pas réussis à stocker la notion de contrat dans le store Redux (c'est un objet qui semble trop compliqué pour Redux). J'ai donc utilisé un Context pour cet objet contract.
 
-**Résultat du déploiement du contrat sur goerli :**
+## Résultat du déploiement du contrat sur goerli :\*\*
 
 ```
 thibaut@Air-de-Thibaut projet3 % truffle migrate --network goerli
@@ -105,7 +105,7 @@ Deploying 'Voting'
 > Final cost: 0.005873028961064155 ETH
 ```
 
-## Getting started
+## Pour démarrer
 
 ```bash
 npm i
