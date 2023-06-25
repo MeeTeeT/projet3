@@ -145,7 +145,7 @@ const ContractProvider = ({ children }) => {
 
 //Fill proposal to vote for when user go the page
 async function fillProposal(){
-  dispatch(resetProposal());
+  //dispatch(resetProposal());
    
 
   let oldEvents= await contract.getPastEvents('ProposalRegistered', {
