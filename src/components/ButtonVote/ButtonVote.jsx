@@ -17,16 +17,8 @@ export function ButtonVote() {
    // dispatch(changeSessionStatus(idStatus));
   }
   async function voteForCurrentProposal(id){
-    // e.preventDefault();
-      //const formData = new FormData(e.currentTarget);
-      //const proposal = formData.get("proposal");
-    // console.log(proposal);
-    // dispatch(addVoter({address}));
-    //dispatch(setCurrentVoteProposal(item));
-    //voter dans la BC pour cette proposition
+    
     try {
-        // Appeler une fonction du contrat
-        //await contractInstance.methods.functionName().send({ from: '0x...' }); // Adresse du compte depuis lequel vous souhaitez exécuter la fonction
         await contract.methods.setVote(id).send( { from: userAddress });
         console.log('La fonction du contrat a été exécutée avec succès.');
         console.log("vous avez votez pour la proposition", id);

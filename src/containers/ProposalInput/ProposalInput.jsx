@@ -7,6 +7,7 @@ import { useContext } from "react";
 
 export function ProposalInput(props) {
   const dispatch = useDispatch();
+  const proposalList = useSelector(store => store.VOTER.proposalList);
   const {contract, addressOwner, userAddress} = useContext(ContractContext);
   
 console.log(contract);
@@ -15,15 +16,25 @@ async function submit(e){
   e.preventDefault();
   const formData = new FormData(e.currentTarget);
   const proposal = formData.get("proposal");
-  console.log(proposal);
+  console.log("proposal : ",proposal);
+console.log("taille proposal list",proposalList.length );
+
+  for(var i=0 ; i<proposalList.length ; i++){
+   console.log("i",i);
+   console.log("proposal",proposalList[i] );
+   console.log("proposal description",proposalList[i].description );
+    if(proposalList[i].description == proposal){
+      console.log("already exist");
+      console.log("voter list i", proposalList[i].description);
+      alert("Proposal "+proposal+" has already been registered");
+      return
+    }
+    
+  }
+
   try {
-    // Appeler une fonction du contrat
-    //await contractInstance.methods.functionName().send({ from: '0x...' }); // Adresse du compte depuis lequel vous souhaitez exécuter la fonction
     await contract.methods.addProposal(proposal).send( { from: userAddress });
     console.log('La fonction du contrat a été exécutée avec succès.');
-    //dispatch(addProposal({"description" : proposal, "voteCount" : 0}));
-
-    //console.log('return ', status);
   
   } catch (error) {
     alert("An error occurs : ",error);

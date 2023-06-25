@@ -19677,12 +19677,18 @@
         }
       },
       "links": {},
-      "address": "0xcF84DBa23D004252626757413A521A926F862F68",
-      "transactionHash": "0x979a03138384da7151a4e0af270bfc25346e8d1ff774f6200acd7c363ad64f97"
+      "address": "0xeB4d7De6e19231518a43F5F2e4dbc93D4751f627",
+      "transactionHash": "0x599dbdce0d8962bc2c3ef74d37d01af5f03a25ed29b73da65098baa0309ee17d"
+    },
+    "1687686784078": {
+      "events": {},
+      "links": {},
+      "address": "0x564BFdce41ceC2F81245DBc9B104049677BD12a5",
+      "transactionHash": "0x4510165418fa467080f2312a2e474af22e901078192f2ecc936eb07b8f985a2a"
     }
   },
   "schemaVersion": "3.4.14",
-  "updatedAt": "2023-06-23T15:17:54.627Z",
+  "updatedAt": "2023-06-25T10:00:01.551Z",
   "networkType": "ethereum",
   "devdoc": {
     "details": "contract implements Ownable from openzeppelin",

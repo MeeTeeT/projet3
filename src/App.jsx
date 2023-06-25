@@ -49,67 +49,81 @@ export function App() {
           completeBarColor = "white" 
           activeStep={ currentStep} />
       <br/><br/>
+
       { auth.role == "Owner" ?
 
-      <div className={`row ${s.workspace}`}>
-      {
-        votingStatus.newStatus == 0 && <div className={`col-12  ${s.expense_input}`}>
-          <VoterInput />
-        </div> 
-      }
-        
-        <div className={`col-11 col-md-6 col-lg-4 ${s.whitelisting_list}`}>
-          {votingStatus.newStatus != 5 ?
-          <List items={voterList} titleCol2={"Registered"}/>
-        : null  
-        }
- 
-          <div className={`col-12 ${s.expense_total}`}>
-          <ButtonChangeStatus />
-          </div>
-        </div>
-          
-      </div> : 
-      auth.role == "Registered" ?
-       <div className={`row ${s.workspace}`}>
-        
-
-        
-        {votingStatus.newStatus == 0 ? <> <div className={`col-11 col-md-6 col-lg-4 ${s.msg_info}`}>Registering voters in progress... Stay tuned !</div></> : 
-         votingStatus.newStatus == 1 ? 
-        <>
-        <div className={`col-12  ${s.expense_input}`}>
-            <ProposalInput />
-          </div> 
-        
-          <div className={`col-11 col-md-6 col-lg-4 ${s.whitelisting_list}`}>
-            <ListProposal items={proposalList} titleCol2={"Proposed"}/>
+          /* Si le user connecté est le owner du contrat */
+          /* => "Owner" dans l'ecran de login */
+          <div className={`row ${s.workspace}`}>
+          {
+            votingStatus.newStatus == 0 && <div className={`col-12  ${s.expense_input}`}>
+              <VoterInput />
+            </div> 
+          }
             
-          </div>
-          </>
-          : 
-         votingStatus.newStatus == 2 ? <><div className={`col-11 col-md-6 col-lg-4 ${s.msg_info}`}>
-         Proposal session is termined... Wait for voting sessions opening</div> </> : 
-         votingStatus.newStatus == 3 ? 
-
-         auth.hasVoted == false ?
-         <><div className={`col-11 col-md-6 col-lg-4 ${s.msg_info}`}>
-        Please vote for a proposal</div><br/>
-          <>
-        
-        
-          <div className={`col-11 col-md-6 col-lg-4 ${s.whitelisting_list}`}>
-            <ListGlobalProposal items={proposalGlobalList} titleCol2={""}/>
-            <div className={`col-12 ${s.expense_total}`}>
-            <ButtonVote />
+            <div className={`col-11 col-md-6 col-lg-4 ${s.whitelisting_list}`}>
+              {votingStatus.newStatus != 5 ?
+              <List items={voterList} titleCol2={"Registered"}/>
+            : null  
+            }
+    
+              <div className={`col-12 ${s.expense_total}`}>
+              <ButtonChangeStatus />
+              </div>
             </div>
+              
+          </div> 
+          /* Fin Si owner du contrat */
+      : 
+
+      auth.role == "Registered" ?
+
+      /* Si le user connecté whitelisté dans le contrat => "Registered" dans l'ecran de login */
+       <div className={`row ${s.workspace}`}>
+        {votingStatus.newStatus == 0 ? 
+        /* Si Status registering voters, on affiche un message d'attente au users whitelistés */
             
-          </div>
-          </>
-          
-          </> :
-          <div className={`col-11 col-md-6 col-lg-4 ${s.msg_info}`}>
-          Thanks you for your vote. Please wait for next step</div>
+            <> <div className={`col-11 col-md-6 col-lg-4 ${s.msg_info}`}>Registering voters in progress... Stay tuned !</div></> : 
+
+         votingStatus.newStatus == 1 ? 
+         /* Si Status start proposal, on affiche la possibilité de renseigner une proposal aux users whitelistés */
+            <>
+            <div className={`col-12  ${s.expense_input}`}>
+                <ProposalInput />
+              </div> 
+            
+              <div className={`col-11 col-md-6 col-lg-4 ${s.whitelisting_list}`}>
+                <ListProposal items={proposalList} titleCol2={"Proposed"}/>
+                
+              </div>
+              </>
+          : 
+
+         votingStatus.newStatus == 2 ? 
+          /* Si Status end proposal , on affiche un message d'attente au users whitelistés */
+
+            <><div className={`col-11 col-md-6 col-lg-4 ${s.msg_info}`}>
+         Proposal session is termined... Wait for voting sessions opening</div> </> :
+         
+         votingStatus.newStatus == 3 ? 
+           /* Si Status start voting, on affiche la possibilité de voter */
+         auth.hasVoted == false ?
+         /* si l'utilisateur n'a pas déja voté, on lui laisse la possiblité de voter */
+              <><div className={`col-11 col-md-6 col-lg-4 ${s.msg_info}`}>
+                Please vote for a proposal</div><br/>
+                  <>
+                    <div className={`col-11 col-md-6 col-lg-4 ${s.whitelisting_list}`}>
+                      <ListGlobalProposal items={proposalGlobalList} titleCol2={""}/>
+                      <div className={`col-12 ${s.expense_total}`}>
+                      <ButtonVote />
+                      </div>
+                    </div>
+                  </>
+                
+                </> :
+                /* si l'utilisateur a deja voté, on lui affiche un message */
+                <div className={`col-11 col-md-6 col-lg-4 ${s.msg_info}`}>
+                Thanks you for your vote. Please wait for next step</div>
           :
 
          votingStatus.newStatus == 4 ? <> <div className={`col-11 col-md-6 col-lg-4 ${s.msg_info}`}>Session vote ended. Winner annoncment to come</div> </>:
@@ -118,7 +132,11 @@ export function App() {
         }
 
        </div>
+       /* Fin user connecté est whitelisté sur le contrat */
        :
+
+       /* Si le user connecté n'est ni le owner, ni whitelisté, on affiche des messages selon les status du workflow de vote*/
+       /* => "Other" dans l'ecran de login */
        <div className={`row ${s.workspace}`}>
          {votingStatus.newStatus == 0 ? <><div className={`col-11 col-md-6 col-lg-4 ${s.msg_info}`}><div>Registering voters in progress... Stay tuned !</div> </div></> 
          : votingStatus.newStatus == 1 ||

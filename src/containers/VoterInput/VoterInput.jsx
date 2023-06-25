@@ -20,19 +20,18 @@ async function  submit(e){
     console.log("voter list i", voterList[i].address);
     if(voterList[i].address == address){
       alert("Address "+address+" has already been registered");
+      return
     }
-    return
+    
   }
   
   console.log(address);
- // dispatch(addVoter({address}));
+
  try {
-  // Appeler une fonction du contrat
-  //await contractInstance.methods.functionName().send({ from: '0x...' }); // Adresse du compte depuis lequel vous souhaitez exécuter la fonction
+  
   await contract.methods.addVoter(address).send( { from: userAddress });
   console.log('La fonction du contrat a été exécutée avec succès.');
-  
-  //console.log('return ', status);
+
 
 } catch (error) {
   alert("An error occurs : ",error);
