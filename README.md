@@ -16,8 +16,10 @@
 
 - React + Redux + web3
 
+```
 <u>_Remarque : L'utilisation de Redux n'était pas indispensable pour l'exercice, mais je me suis servis du cas cette dApp pour me former à React (+redux). (je n'avais jamais travaillé avec React auparavant)
 L'utilisation de Redux m'a finalement été très utile car elle m'a permis de bien comprendre les différentes interractions avec la BLockchain étant donné que je pouvais visualiser tout ce que je remontais de la BC dans le store Redux en temps réel_</u>
+```
 
 ## Principe de fonctionnement
 
@@ -27,7 +29,9 @@ Sur le principe, ma dApp fonctionne de la façon suivante :
 - J'écoute les events de la blockchain et je stock les retours de ces events dans mon store Redux dans ContractProvider.jsx
 - Je lis mon store Redux en permanance pour mettre a jours les components de mon app dans les différents components.
 
-Remarque : Je n'ai pas réussis à stocker la notion de contrat dans le store Redux (c'est un objet qui semble trop compliqué pour Redux). J'ai donc utilisé un Context pour cet objet contract.
+```
+<u>_Remarque : Je n'ai pas réussis à stocker la notion de contrat dans le store Redux (c'est un objet qui semble trop compliqué pour Redux). J'ai donc utilisé un Context pour cet objet contract._</u>
+```
 
 ## Résultat du déploiement du contrat sur goerli :\*\*
 
