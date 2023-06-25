@@ -19773,12 +19773,12 @@
         }
       },
       "links": {},
-      "address": "0x0a37e4F577dF6fddE7629D6cc9876E02E2Cb13FE",
-      "transactionHash": "0x48e5251afc2028395baae3c6fa23b9bdb647b9e10b54c50d52e361329317176a"
+      "address": "0xc518737062bede8997ecA21B05A2C01d455F8958",
+      "transactionHash": "0xc47c1d3136842e6bb2d6b96979de576c4ada65dd9d150a7d5a64bf48905c386e"
     }
   },
   "schemaVersion": "3.4.14",
-  "updatedAt": "2023-06-25T11:53:17.008Z",
+  "updatedAt": "2023-06-25T12:28:22.301Z",
   "networkType": "ethereum",
   "devdoc": {
     "details": "contract implements Ownable from openzeppelin",
