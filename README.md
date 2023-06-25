@@ -16,18 +16,20 @@
 
 - React + Redux + web3
 
-<u>_Remarque : L'utilisation de Redux n'était pas indispensable pour l'exercice, mais je me suis servis du cas cette dApp pour me former à React (+redux). (je n'avais jamais travaillé avec React auparavant).  
-L'utilisation de Redux m'a finalement été très utile car elle m'a permis de bien comprendre les différentes interractions avec la BLockchain étant donné que je pouvais visualiser tout ce que je remontais de la BC dans le store Redux en temps réel_</u>
+<u>\_Remarque : L'utilisation de Redux n'était pas indispensable pour l'exercice, mais je me suis servis du cas cette dApp pour me former à React (+redux).
+(je n'avais jamais travaillé avec React auparavant).
+
+L'utilisation de Redux m'a finalement été très utile car elle m'a permis de bien comprendre les différentes interractions avec la Blockchain étant donné que je pouvais visualiser tout ce que je remontais de la BC dans le store Redux en temps réel.\_</u>
 
 ## Principe de fonctionnement
 
 Sur le principe, ma dApp fonctionne de la façon suivante :
 
-- J'interragis avec le smart contract en appelant des fonctions (changeStatus, addProposal, vote, ...) dans des conponents (ProposalInput, VoterInput, ...).
-- J'écoute les events de la blockchain et je stock les retours de ces events dans mon store Redux dans ContractProvider.jsx
-- Je lis mon store Redux en permanance pour mettre a jours les components de mon app dans les différents components.
+- J'interragis avec le smart contract en appelant des fonctions du Smart Contract dans des components React (ProposalInput, VoterInput, ...).
+- J'écoute les events de la blockchain, et je stock les retours de ces events dans mon store Redux dans ContractProvider.jsx
+- Je lis mon store Redux en permanance pour mettre à jour les components de mon app.
 
-<u>_Remarque : Je n'ai pas réussis à stocker la notion de contrat dans le store Redux (c'est un objet qui semble trop compliqué pour Redux). J'ai donc utilisé un Context pour cet objet contract._</u>
+<u>_Remarque : Je n'ai pas réussi à stocker la notion de "contract" dans le store Redux (c'est un objet qui semble trop compliqué pour Redux). J'ai donc utilisé un Context pour cet objet contract._</u>
 
 ## Résultat du déploiement du contrat sur goerli :\*\*
 
