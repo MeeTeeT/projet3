@@ -33,7 +33,7 @@ Sur le principe, ma dApp fonctionne de la façon suivante :
 - J'écoute les events de la blockchain, et je stock les retours de ces events dans mon store Redux dans ContractProvider.jsx
 - Je lis mon store Redux en permanance pour mettre à jour les components de mon app.
 
-<u>_Remarque : Je n'ai pas réussi à stocker la notion de "contract" dans le store Redux (c'est un objet qui semble trop compliqué pour Redux). J'ai donc utilisé un Context pour cet objet contract._</u>
+<u>_Remarque : Je n'ai pas réussi à stocker la notion de "contract" dans le store Redux (c'est un objet qui semble trop compliqué pour Redux). J'ai donc utilisé un Context pour cet objet contract_</u>
 
 ## Résultat du déploiement du contrat sur goerli :\*\*
 
